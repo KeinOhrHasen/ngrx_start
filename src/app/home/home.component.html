@@ -1,0 +1,10 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+
+<button class="load-image" (click)="loadImage()">Load Todays Picture</button>
+
+<ng-container *ngIf="apod.url">
+    <img class="image" [src]="apod.hdurl" alt="Space Picture">
+    <h1>{{apod.title}}</h1>
+    <p>{{apod.explanation}}</p>
+</ng-container>
