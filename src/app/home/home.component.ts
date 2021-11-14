@@ -7,21 +7,20 @@ import { NasaService } from '../shared/services/nasa.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
-  public apod: IAPOD;
+  public apods: IAPOD[] = [];
 
   constructor(
-    private store: Store<{apod: IAPOD | any}>,
+    private store: Store<{ apods: IAPOD[] }>,
     private nasaService: NasaService
-    ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.store.select('apod').subscribe((image) => {
-      console.log(image)
-      this.apod = image.apod;
+    this.store.select('apods').subscribe((apods) => {
+      console.log(apods);
+      // this.apods = images;
     });
   }
 
@@ -32,5 +31,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  public deleteImage(index: number): void {
+    this.store.dispatch(new apodActions.deleteAPODPicture(index));
+  }
 
+  public updateImage(apod: IAPOD, index: number): void {
+    const updatedImage = {
+      ...apod,
+      title: 'New Title',
+    };
+    this.store.dispatch(
+      new apodActions.updateAPODPicture({ apod: updatedImage, index })
+    );
+  }
 }
